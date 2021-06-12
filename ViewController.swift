@@ -81,8 +81,12 @@ class ViewController: UIViewController {
 }
 
 extension ViewController: GameViewUpdate {
-    func updatePoints() {
-        self.scoreLabel.text = "Points: \(self.gameLogic.points)"
+    func updateTimer(count: Int) {
+        self.timerLabel.text = "Timer: \(count)"
+    }
+    
+    func updatePoints(points: Int) {
+        self.scoreLabel.text = "Points: \(points)"
     }
     
     func revealLogoName(at index: Int, _ char: String) {
@@ -107,10 +111,6 @@ extension ViewController: GameViewUpdate {
         self.answerStackView.isHidden = paused
         self.optionsStackViewTop.isHidden = paused
         self.optionsStackViewBottom.isHidden = paused
-    }
-    
-    func updateTimer() {
-        self.timerLabel.text = "Timer: \(self.gameLogic.counter)"
     }
     
     func renderLogo() {

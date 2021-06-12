@@ -18,6 +18,7 @@
 		B80AE206267483470082F434 /* LogoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B80AE205267483470082F434 /* LogoModel.swift */; };
 		B80AE2092674856F0082F434 /* GameLogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = B80AE2082674856F0082F434 /* GameLogic.swift */; };
 		B80AE20B2674864A0082F434 /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = B80AE20A2674864A0082F434 /* ImageLoader.swift */; };
+		B80AE20D2674AB740082F434 /* GameTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B80AE20C2674AB740082F434 /* GameTimer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,6 +56,7 @@
 		B80AE205267483470082F434 /* LogoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoModel.swift; sourceTree = "<group>"; };
 		B80AE2082674856F0082F434 /* GameLogic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameLogic.swift; sourceTree = "<group>"; };
 		B80AE20A2674864A0082F434 /* ImageLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoader.swift; sourceTree = "<group>"; };
+		B80AE20C2674AB740082F434 /* GameTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameTimer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,8 +88,6 @@
 			isa = PBXGroup;
 			children = (
 				B80AE1D2267482CA0082F434 /* QuizApp */,
-				B80AE204267483130082F434 /* UI */,
-				B80AE2072674855C0082F434 /* Logic */,
 				B80AE1E9267482CD0082F434 /* QuizAppTests */,
 				B80AE1F4267482CD0082F434 /* QuizAppUITests */,
 				B80AE1D1267482CA0082F434 /* Products */,
@@ -107,6 +107,8 @@
 		B80AE1D2267482CA0082F434 /* QuizApp */ = {
 			isa = PBXGroup;
 			children = (
+				B80AE204267483130082F434 /* UI */,
+				B80AE2072674855C0082F434 /* Logic */,
 				B80AE1E1267482CC0082F434 /* Info.plist */,
 				B80AE203267482DD0082F434 /* SupportingFiles */,
 			);
@@ -149,6 +151,7 @@
 				B80AE1D7267482CA0082F434 /* ViewController.swift */,
 			);
 			name = UI;
+			path = ..;
 			sourceTree = "<group>";
 		};
 		B80AE2072674855C0082F434 /* Logic */ = {
@@ -156,9 +159,11 @@
 			children = (
 				B80AE205267483470082F434 /* LogoModel.swift */,
 				B80AE2082674856F0082F434 /* GameLogic.swift */,
+				B80AE20C2674AB740082F434 /* GameTimer.swift */,
 				B80AE20A2674864A0082F434 /* ImageLoader.swift */,
 			);
 			name = Logic;
+			path = ..;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -294,6 +299,7 @@
 				B80AE206267483470082F434 /* LogoModel.swift in Sources */,
 				B80AE1D8267482CA0082F434 /* ViewController.swift in Sources */,
 				B80AE20B2674864A0082F434 /* ImageLoader.swift in Sources */,
+				B80AE20D2674AB740082F434 /* GameTimer.swift in Sources */,
 				B80AE1D4267482CA0082F434 /* AppDelegate.swift in Sources */,
 				B80AE2092674856F0082F434 /* GameLogic.swift in Sources */,
 				B80AE1D6267482CA0082F434 /* SceneDelegate.swift in Sources */,

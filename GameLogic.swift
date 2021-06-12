@@ -11,20 +11,26 @@ protocol GameViewUpdate: AnyObject {
     func renderLogo()
     func renderGameEnded()
     func renderGamePaused(_ paused: Bool)
-    func updateTimer()
+    func updateTimer(count: Int)
     func revealLogoName(at index: Int, _ char: String)
-    func updatePoints()
+    func updatePoints(points: Int)
 }
 
 class GameLogic {
     private weak var viewUpdate: GameViewUpdate?
     private let logoProvider: LogoProviderType
+    
     private var quizLogos: [Logo] = []
     private var displayLogos: [Logo] = []
-    private let maxCounter = 60
+    private var points = 0
+    
+    private lazy var timer: GameTimer = {
+        GameTimer(maxCounter: 60, delegate: self)
+    }()
+    
     private var answerToGuess: [Character] = []
     private var isPaused = false
-    private var timer: Timer?
+    
     
     init(viewUpdate: GameViewUpdate, logoProvider: LogoProviderType) {
         self.viewUpdate = viewUpdate
@@ -32,8 +38,6 @@ class GameLogic {
     }
     
     // To render UI
-    private(set) var counter = 5
-    private(set) var points = 0
     private(set) var currentLogo: Logo?
     private(set) var answerOptions: [String] = []
     var currentLevelString: String {
@@ -54,37 +58,34 @@ class GameLogic {
     
     func pauseResumeGame() {
         if self.isPaused {
-            self.startTimer()
+            self.timer.startTimer()
         } else {
-            self.timer?.invalidate()
+            self.timer.invalidate()
         }
         
         self.isPaused.toggle()
         self.viewUpdate?.renderGamePaused(self.isPaused)
     }
     
-    func resetCounter() {
-        self.counter = maxCounter
-        self.startTimer()
-    }
-    
     func submitAnswer(_ char: Character) {
         if let index = self.answerToGuess.firstIndex(of: char) {
             self.viewUpdate?.revealLogoName(at: index, "\(char)")
-            self.points += (counter*10)/maxCounter
+            self.points += self.timer.getPoints(partial: true)
             self.answerToGuess[index] = "0"
             
             if self.answerToGuess.allSatisfy({ $0 == "0" }) {
-                self.points += (counter*100)/maxCounter
+                self.points += self.timer.getPoints(partial: false)
                 self.updateNextQuestion()
             }
-            
         } else {
-            self.counter -= 3
-            self.viewUpdate?.updateTimer()
+            self.timer.decreaseCount(by: 3)
         }
         
-        self.viewUpdate?.updatePoints()
+        self.viewUpdate?.updatePoints(points: self.points)
+    }
+    
+    func resetCounter() {
+        self.timer.resetCounter()
     }
     
     // private functions
@@ -102,8 +103,7 @@ class GameLogic {
         self.currentLogo = self.displayLogos.removeFirst()
         self.answerToGuess = Array(self.currentLogo?.name ?? "")
         self.setupAnswerOptions()
-        self.counter = maxCounter
-        self.viewUpdate?.updateTimer()
+        self.timer.resetCounter()
         self.viewUpdate?.renderLogo()
     }
     
@@ -120,23 +120,19 @@ class GameLogic {
         self.answerOptions = [String(firstHalf), String(secondHalf)]
     }
     
-    private func startTimer() {
-        self.timer?.invalidate()
-        self.timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateCounter), userInfo: nil, repeats: true)
-    }
-    
     private func endGame() {
-        self.timer?.invalidate()
+        self.timer.invalidate()
         self.viewUpdate?.renderGameEnded()
     }
     
-    @objc func updateCounter() {
-        if self.counter == 0 {
-            self.updateNextQuestion()
-        } else {
-            self.counter -= 1
-        }
-        
-        self.viewUpdate?.updateTimer()
+}
+
+extension GameLogic: TimerDelegate {
+    func updateTimer(count: Int) {
+        self.viewUpdate?.updateTimer(count: count)
+    }
+    
+    func timerFinished() {
+        self.updateNextQuestion()
     }
 }
