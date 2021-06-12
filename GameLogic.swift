@@ -72,9 +72,9 @@ class GameLogic {
         if let index = self.answerToGuess.firstIndex(of: char) {
             self.viewUpdate?.revealLogoName(at: index, "\(char)")
             self.points += (counter*10)/maxCounter
-            self.answerToGuess.remove(at: index)
+            self.answerToGuess[index] = "0"
             
-            if self.answerToGuess.isEmpty {
+            if self.answerToGuess.allSatisfy({ $0 == "0" }) {
                 self.points += (counter*100)/maxCounter
                 self.updateNextQuestion()
             }

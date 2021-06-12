@@ -86,7 +86,9 @@ extension ViewController: GameViewUpdate {
     }
     
     func revealLogoName(at index: Int, _ char: String) {
-        // TODO:- change label text from ? to char
+        guard let label = self.answerStackView.arrangedSubviews[index] as? UILabel else { return }
+        label.backgroundColor = .green
+        label.text = "\(char)"
     }
     
     func renderGameEnded() {
