@@ -92,7 +92,12 @@ extension ViewController: GameViewUpdate {
     }
     
     func renderGameEnded() {
-        // TODO: - show popup
+        self.logoImageView.isHidden = true
+        self.answerStackView.isHidden = true
+        self.optionsStackViewTop.isHidden = true
+        self.optionsStackViewBottom.isHidden = true
+        self.playpauseButton.isEnabled = false
+        self.playpauseButton.setTitle("Game Finished", for: .normal)
     }
     
     func renderGamePaused(_ paused: Bool) {
