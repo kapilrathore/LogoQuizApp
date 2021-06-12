@@ -75,6 +75,8 @@ class ViewController: UIViewController {
     @objc private func submitAnswer(_ sender: UIButton) {
         guard let char = sender.currentTitle?.first else { return }
         self.gameLogic.submitAnswer(char)
+        sender.isEnabled = false
+        sender.backgroundColor = .red
     }
 }
 
