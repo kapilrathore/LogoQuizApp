@@ -13,6 +13,7 @@ protocol GameViewUpdate: AnyObject {
     func renderGamePaused(_ paused: Bool)
     func updateTimer()
     func revealLogoName(at index: Int, _ char: String)
+    func updatePoints()
 }
 
 class GameLogic {
@@ -21,7 +22,7 @@ class GameLogic {
     private var quizLogos: [Logo] = []
     private var displayLogos: [Logo] = []
     private let maxCounter = 60
-    private var charsToGuessRemaining = 0
+    private var answerToGuess: [Character] = []
     private var isPaused = false
     private var timer: Timer?
     
@@ -68,15 +69,13 @@ class GameLogic {
     }
     
     func submitAnswer(_ char: Character) {
-        let nameArray = Array(self.currentLogo?.name ?? "")
-        
-        if let index = nameArray.firstIndex(of: char) {
+        if let index = self.answerToGuess.firstIndex(of: char) {
             self.viewUpdate?.revealLogoName(at: index, "\(char)")
-            self.points += (counter/maxCounter)*10
-            self.charsToGuessRemaining -= 1
+            self.points += (counter*10)/maxCounter
+            self.answerToGuess.remove(at: index)
             
-            if self.charsToGuessRemaining == 0 {
-                self.points += (counter/maxCounter)*100
+            if self.answerToGuess.isEmpty {
+                self.points += (counter*100)/maxCounter
                 self.updateNextQuestion()
             }
             
@@ -84,6 +83,8 @@ class GameLogic {
             self.counter -= 3
             self.viewUpdate?.updateTimer()
         }
+        
+        self.viewUpdate?.updatePoints()
     }
     
     // private functions
@@ -99,7 +100,7 @@ class GameLogic {
         }
         
         self.currentLogo = self.displayLogos.removeFirst()
-        self.charsToGuessRemaining = self.currentLogo?.name.count ?? 0
+        self.answerToGuess = Array(self.currentLogo?.name ?? "")
         self.setupAnswerOptions()
         self.counter = maxCounter
         self.viewUpdate?.updateTimer()

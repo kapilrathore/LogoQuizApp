@@ -52,26 +52,37 @@ class ViewController: UIViewController {
         self.optionsStackViewBottom.arrangedSubviews.forEach { $0.removeFromSuperview() }
         
         options.first?.forEach { char in
-            let button = UIButton()
-            button.frame = .init(x: 0, y: 0, width: 32, height: 32)
-            button.setTitle("\(char)", for: .normal)
-            button.setTitleColor(.white, for: .normal)
-            button.backgroundColor = .darkGray
+            let button = self.createButton(with: char)
             self.optionsStackViewTop.addArrangedSubview(button)
         }
         
         options.last?.forEach { char in
-            let button = UIButton()
-            button.frame = .init(x: 0, y: 0, width: 32, height: 32)
-            button.setTitle("\(char)", for: .normal)
-            button.setTitleColor(.white, for: .normal)
-            button.backgroundColor = .darkGray
+            let button = self.createButton(with: char)
             self.optionsStackViewBottom.addArrangedSubview(button)
         }
+    }
+    
+    private func createButton(with char: Character) -> UIButton {
+        let button = UIButton()
+        button.frame = .init(x: 0, y: 0, width: 32, height: 32)
+        button.setTitle("\(char)", for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.backgroundColor = .darkGray
+        button.addTarget(self, action: #selector(submitAnswer(_:)), for: .touchUpInside)
+        return button
+    }
+    
+    @objc private func submitAnswer(_ sender: UIButton) {
+        guard let char = sender.currentTitle?.first else { return }
+        self.gameLogic.submitAnswer(char)
     }
 }
 
 extension ViewController: GameViewUpdate {
+    func updatePoints() {
+        self.scoreLabel.text = "Points: \(self.gameLogic.points)"
+    }
+    
     func revealLogoName(at index: Int, _ char: String) {
         // TODO:- change label text from ? to char
     }
